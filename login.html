@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login • RSG</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', system_ui, sans-serif;
+        }
+        .heading-font {
+            font-family: 'Space Grotesk', 'Inter', sans-serif;
+            font-weight: 600;
+            letter-spacing: -0.04em;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-white flex items-center justify-center min-h-screen">
+    <div class="w-full max-w-md px-6">
+        <!-- Logo -->
+        <div class="flex justify-center mb-8">
+            <div class="flex items-center gap-x-3">
+                <div class="w-12 h-12 bg-sky-500 rounded-3xl flex items-center justify-center shadow-inner">
+                    <i class="fa-solid fa-plane text-white text-4xl -rotate-12"></i>
+                </div>
+                <div>
+                    <span class="text-5xl font-black tracking-tighter">RSG</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-9 shadow-2xl">
+            <div class="text-center mb-8">
+                <h1 class="text-3xl font-semibold tracking-tight">Welcome back</h1>
+                <p class="text-slate-400 mt-2 text-sm">Sign in to manage announcements and site content</p>
+            </div>
+
+            <!-- Login Form -->
+            <form id="login-form" class="space-y-5">
+                <div>
+                    <label class="block text-xs font-semibold tracking-widest text-slate-400 mb-2">EMAIL ADDRESS</label>
+                    <input type="email" id="email" value="Tornqvisteliaz@gmail.com" required
+                           class="w-full bg-slate-950 border border-slate-700 focus:border-sky-500 transition-colors h-12 px-5 rounded-2xl text-white placeholder:text-slate-500 outline-none">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold tracking-widest text-slate-400 mb-2">PASSWORD</label>
+                    <div class="relative">
+                        <input type="password" id="password" value="rsgbluebird" required
+                               class="w-full bg-slate-950 border border-slate-700 focus:border-sky-500 transition-colors h-12 px-5 rounded-2xl text-white placeholder:text-slate-500 outline-none pr-12">
+                        <button type="button" onclick="togglePasswordVisibility(this)"
+                                class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+                    </div>
+                    <p class="text-[10px] text-slate-500 mt-1.5 px-1">Demo password: <span class="font-mono">rsgbluebird</span></p>
+                </div>
+
+                <button type="submit"
+                        class="mt-2 w-full h-14 bg-sky-500 hover:bg-sky-600 active:bg-sky-700 transition-all font-semibold text-lg rounded-3xl flex items-center justify-center gap-x-3 shadow-lg shadow-sky-500/40">
+                    SIGN IN
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </form>
+
+            <div class="mt-8 text-center">
+                <a href="index.html" class="text-xs text-slate-400 hover:text-slate-300 inline-flex items-center gap-x-2">
+                    <i class="fa-solid fa-arrow-left"></i> 
+                    Back to public site
+                </a>
+            </div>
+        </div>
+
+        <p class="text-center text-[10px] text-slate-500 mt-8 tracking-wider">SECURE ADMIN ACCESS • RSG SIMULATIONS</p>
+    </div>
+
+    <script>
+        function togglePasswordVisibility(btn) {
+            const input = document.getElementById('password');
+            if (input.type === 'password') {
+                input.type = 'text';
+                btn.innerHTML = '<i class="fa-solid fa-eye-slash"></i>';
+            } else {
+                input.type = 'password';
+                btn.innerHTML = '<i class="fa-solid fa-eye"></i>';
+            }
+        }
+
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            
+            const submitBtn = e.target.querySelector('button');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = `VERIFYING... <i class="fa-solid fa-spinner fa-spin ml-2"></i>`;
+            submitBtn.disabled = true;
+
+            // Simulate network delay
+            setTimeout(() => {
+                // Hardcoded credentials for demo
+                if (email.toLowerCase() === 'tornqvisteliaz@gmail.com' && password === 'rsgbluebird') {
+                    // Success - set admin flag
+                    localStorage.setItem('isAdmin', 'true');
+                    localStorage.setItem('adminEmail', email);
+                    
+                    // Redirect to admin dashboard
+                    window.location.href = 'admin.html';
+                } else {
+                    // Failed
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                    
+                    const errorDiv = document.createElement('div');
+                    errorDiv.className = `mt-4 text-center text-sm bg-red-900/30 border border-red-800 text-red-400 px-5 py-3 rounded-2xl`;
+                    errorDiv.innerHTML = `Invalid credentials. Please use the demo email and password.`;
+                    
+                    const existing = e.target.parentNode.querySelector('.bg-red-900\/30');
+                    if (existing) existing.remove();
+                    
+                    e.target.parentNode.appendChild(errorDiv);
+                    
+                    setTimeout(() => {
+                        if (errorDiv && errorDiv.parentNode) errorDiv.parentNode.removeChild(errorDiv);
+                    }, 3800);
+                }
+            }, 850);
+        });
+
+        // Pre-focus password field
+        window.onload = function() {
+            const passField = document.getElementById('password');
+            if (passField) passField.focus();
+            if (passField) passField.select();
+        };
+    </script>
+</body>
+</html>

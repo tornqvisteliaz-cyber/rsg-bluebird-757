@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RSG • Bluebird 757 | Premium Flight Simulation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;family=Space+Grotesk:wght@500;600&amp;display=swap');
+        
+        :root {
+            --primary: #0ea5e9;
+        }
+        
+        body {
+            font-family: 'Inter', system_ui, sans-serif;
+        }
+        
+        .heading-font {
+            font-family: 'Space Grotesk', 'Inter', sans-serif;
+            font-weight: 600;
+            letter-spacing: -0.025em;
+        }
+
+        .hero-bg {
+            background-image: linear-gradient(rgba(15, 23, 42, 0.65), rgba(15, 23, 42, 0.75)), url('hero-plane.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        .nav-link {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .nav-link:hover {
+            color: #0ea5e9;
+            transform: translateY(-1px);
+        }
+
+        .section-header {
+            font-size: 2.25rem;
+            line-height: 2.5rem;
+            font-weight: 700;
+            letter-spacing: -0.04em;
+        }
+
+        .announcement-card {
+            transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+        }
+        
+        .announcement-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+
+        .plane-shadow {
+            filter: drop-shadow(0 25px 25px rgb(0 0 0 / 0.15));
+        }
+
+        .rsq-logo {
+            font-weight: 800;
+            letter-spacing: -0.05em;
+        }
+
+        .sim-text {
+            font-size: 0.75rem;
+            letter-spacing: 3px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900">
+    <!-- Navbar -->
+    <nav class="bg-white border-b border-slate-200 sticky top-0 z-50">
+        <div class="max-w-screen-2xl mx-auto">
+            <div class="px-8 py-4 flex items-center justify-between">
+                <!-- Left Nav -->
+                <div class="flex items-center gap-x-8">
+                    <div class="flex items-center gap-x-3">
+                        <div class="w-9 h-9 bg-sky-500 rounded-2xl flex items-center justify-center shadow-inner">
+                            <i class="fa-solid fa-plane text-white text-3xl -rotate-12"></i>
+                        </div>
+                        <div>
+                            <span class="rsq-logo text-3xl font-black tracking-tighter">RSG</span>
+                        </div>
+                    </div>
+                    
+                    <div class="hidden md:flex items-center gap-x-7 text-sm font-medium">
+                        <a href="#announcements" class="nav-link text-slate-700 hover:text-sky-600 px-3 py-1.5">Announcements</a>
+                        <a href="#projects" class="nav-link text-slate-700 hover:text-sky-600 px-3 py-1.5">Projects</a>
+                        <a href="#about" class="nav-link text-slate-700 hover:text-sky-600 px-3 py-1.5">About</a>
+                        <a href="#openings" class="nav-link text-slate-700 hover:text-sky-600 px-3 py-1.5">Openings</a>
+                        <a href="#contact" class="nav-link text-slate-700 hover:text-sky-600 px-3 py-1.5">Contact</a>
+                    </div>
+                </div>
+
+                <!-- Center Logo / Brand -->
+                <div class="hidden lg:flex items-center justify-center absolute left-1/2 -translate-x-1/2">
+                    <div class="flex items-center gap-x-2 px-5 py-1.5 bg-white rounded-3xl shadow-sm border border-slate-100">
+                        <div class="w-6 h-6 bg-sky-500 rounded-xl flex items-center justify-center">
+                            <i class="fa-solid fa-plane text-white text-lg"></i>
+                        </div>
+                        <span class="font-semibold text-slate-800 tracking-tight">Bluebird 757</span>
+                    </div>
+                </div>
+
+                <!-- Right side -->
+                <div class="flex items-center gap-x-4">
+                    <!-- Social Icons -->
+                    <div class="hidden md:flex items-center gap-x-1 text-slate-400">
+                        <a href="#" class="w-9 h-9 flex items-center justify-center hover:text-sky-500 transition-colors"><i class="fa-brands fa-facebook-f text-lg"></i></a>
+                        <a href="#" class="w-9 h-9 flex items-center justify-center hover:text-sky-500 transition-colors"><i class="fa-brands fa-x-twitter text-lg"></i></a>
+                        <a href="#" class="w-9 h-9 flex items-center justify-center hover:text-sky-500 transition-colors"><i class="fa-brands fa-discord text-lg"></i></a>
+                        <a href="#" class="w-9 h-9 flex items-center justify-center hover:text-sky-500 transition-colors"><i class="fa-brands fa-youtube text-lg"></i></a>
+                        <a href="#" class="w-9 h-9 flex items-center justify-center hover:text-sky-500 transition-colors"><i class="fa-brands fa-instagram text-lg"></i></a>
+                    </div>
+
+                    <!-- Admin / Login -->
+                    <div id="nav-auth" class="flex items-center gap-x-3">
+                        <a href="login.html" 
+                           class="px-5 py-2 text-sm font-semibold text-sky-600 hover:text-sky-700 transition-colors flex items-center gap-x-2">
+                            <i class="fa-solid fa-user-shield"></i>
+                            <span class="hidden sm:inline">Admin Login</span>
+                        </a>
+                    </div>
+
+                    <!-- Mobile Menu -->
+                    <button id="mobile-menu-btn"
+                            class="md:hidden w-10 h-10 flex items-center justify-center text-slate-600 hover:text-slate-900">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero-bg h-[100dvh] min-h-[720px] flex items-center relative">
+        <div class="max-w-screen-2xl mx-auto px-8 pt-12 pb-16">
+            <div class="max-w-2xl">
+                <!-- Status Badge -->
+                <div class="inline-flex items-center gap-x-2 px-4 py-1.5 rounded-3xl bg-white/90 backdrop-blur-md shadow-sm mb-6 border border-white/60">
+                    <div class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+                    <span class="text-emerald-700 text-sm font-semibold tracking-[1.5px]">IN DEVELOPMENT</span>
+                </div>
+
+                <h1 class="text-white text-[92px] md:text-[110px] leading-[82px] md:leading-[96px] font-black tracking-tighter heading-font">
+                    BLUEBIRD<br>757
+                </h1>
+                
+                <p class="mt-4 max-w-md text-white/90 text-xl">
+                    The most detailed Icelandair 757-200 experience ever created for Microsoft Flight Simulator.
+                </p>
+
+                <div class="mt-10 flex items-center gap-x-4">
+                    <a href="#projects" 
+                       class="inline-flex items-center justify-center gap-x-3 bg-sky-500 hover:bg-sky-600 active:bg-sky-700 transition-all text-white font-semibold px-8 h-14 rounded-3xl shadow-lg shadow-sky-500/30 text-base">
+                        Learn More
+                        <i class="fa-solid fa-arrow-right ml-1"></i>
+                    </a>
+                    
+                    <a href="#announcements" 
+                       class="inline-flex items-center justify-center gap-x-2 border border-white/40 hover:bg-white/10 text-white font-medium px-6 h-14 rounded-3xl transition-all text-sm">
+                        View Announcements
+                    </a>
+                </div>
+
+                <div class="mt-8 flex items-center gap-x-3 text-white/60 text-sm">
+                    <div class="flex -space-x-2">
+                        <div class="w-6 h-6 bg-white/90 rounded-full border border-white/50 overflow-hidden"><img src="https://i.pravatar.cc/24?img=12" class="w-full h-full object-cover"></div>
+                        <div class="w-6 h-6 bg-white/90 rounded-full border border-white/50 overflow-hidden"><img src="https://i.pravatar.cc/24?img=28" class="w-full h-full object-cover"></div>
+                        <div class="w-6 h-6 bg-white/90 rounded-full border border-white/50 overflow-hidden"><img src="https://i.pravatar.cc/24?img=47" class="w-full h-full object-cover"></div>
+                    </div>
+                    <span class="font-medium">Featured at FS Expo 2024</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 hidden md:block">
+            <div class="flex flex-col items-center text-white/50 text-xs tracking-[2px]">
+                SCROLL TO EXPLORE
+                <i class="fa-solid fa-chevron-down mt-1.5 animate-bounce"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- Announcements Section -->
+    <section id="announcements" class="max-w-screen-2xl mx-auto px-8 pt-20 pb-16">
+        <div class="flex items-end justify-between mb-8">
+            <div>
+                <span class="sim-text text-sky-500">COMMUNITY UPDATES</span>
+                <h2 class="section-header tracking-tighter">Announcements</h2>
+            </div>
+            <a href="login.html" class="hidden md:flex items-center text-sm font-semibold text-sky-600 hover:text-sky-700">
+                Post as admin <i class="fa-solid fa-arrow-right ml-2"></i>
+            </a>
+        </div>
+
+        <div id="announcements-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Populated dynamically via JavaScript -->
+        </div>
+    </section>
+
+    <!-- 787 Project Section -->
+    <section id="projects" class="bg-slate-900 text-white py-20">
+        <div class="max-w-screen-2xl mx-auto px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-x-12 items-center">
+                <!-- Image -->
+                <div class="lg:col-span-7 relative">
+                    <div class="relative rounded-3xl overflow-hidden shadow-2xl ring-1 ring-white/10">
+                        <img src="front-plane.png" alt="RSG 787 Development" class="w-full h-auto object-cover plane-shadow">
+                        <div class="absolute inset-0 bg-gradient-to-r from-slate-900/60 via-transparent to-transparent"></div>
+                        <div class="absolute top-6 left-6">
+                            <div class="px-4 py-1 bg-white/90 text-slate-900 text-xs font-bold tracking-[2px] rounded-2xl inline-block">COMING SOON</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Content -->
+                <div class="lg:col-span-5 mt-10 lg:mt-0">
+                    <div class="max-w-md">
+                        <span class="px-4 py-1 text-xs font-bold tracking-[3px] bg-white/10 text-white rounded-2xl">NEXT PROJECT</span>
+                        
+                        <h2 class="mt-6 text-6xl font-black tracking-tighter heading-font">787</h2>
+                        <p class="mt-1 text-sky-400 font-semibold">Full from-scratch development</p>
+
+                        <div class="mt-8 text-[15px] leading-relaxed text-slate-300 space-y-4">
+                            <p>On June 21st, 2024 at the FS Expo, RSG revealed our third and most complex project.</p>
+                            
+                            <p>Currently this is being developed by an independent small team until the rest of us can join in after the 757. The 787 is being built from scratch with everything being done in-house.</p>
+                            
+                            <p>Since our reveal, we have had numerous people reach out to us and offer help and resources. Thank you! This is going to take us a while but will be well worth the wait for those wanting a truly authentic 787 experience.</p>
+                        </div>
+
+                        <div class="mt-8">
+                            <a href="#contact" 
+                               class="inline-flex items-center px-6 h-12 rounded-3xl bg-white text-slate-900 font-semibold text-sm hover:bg-amber-50 active:bg-white transition-colors">
+                                Join the waitlist
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="max-w-screen-2xl mx-auto px-8 py-20">
+        <div class="max-w-3xl">
+            <span class="sim-text text-sky-500">WHO WE ARE</span>
+            <h2 class="section-header tracking-tighter mt-2">RSG is a small team of passionate flight sim enthusiasts.</h2>
+            
+            <div class="mt-8 text-lg text-slate-600 leading-relaxed space-y-6">
+                <p>We create the highest fidelity add-ons for Microsoft Flight Simulator, X-Plane and Prepar3D. Every project is built with obsessive attention to detail — from accurate flight dynamics and systems simulation to stunning liveries and sound design.</p>
+                
+                <p>Our flagship project, <span class="font-semibold text-slate-900">Bluebird 757</span>, brings the iconic Icelandair Boeing 757-200 to life with unmatched accuracy and visual quality.</p>
+            </div>
+
+            <div class="mt-10 grid grid-cols-3 gap-4 text-center">
+                <div class="bg-white p-5 rounded-3xl border border-slate-100">
+                    <div class="text-4xl font-black text-sky-500">12</div>
+                    <div class="text-xs tracking-widest mt-1 text-slate-500">LIVERIES</div>
+                </div>
+                <div class="bg-white p-5 rounded-3xl border border-slate-100">
+                    <div class="text-4xl font-black text-sky-500">4</div>
+                    <div class="text-xs tracking-widest mt-1 text-slate-500">AIRCRAFT</div>
+                </div>
+                <div class="bg-white p-5 rounded-3xl border border-slate-100">
+                    <div class="text-4xl font-black text-sky-500">87k</div>
+                    <div class="text-xs tracking-widest mt-1 text-slate-500">DOWNLOADS</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Openings Section -->
+    <section id="openings" class="bg-white border-t border-slate-100 py-16">
+        <div class="max-w-screen-2xl mx-auto px-8">
+            <div class="flex justify-between items-end mb-9">
+                <div>
+                    <span class="sim-text text-sky-500">JOIN THE TEAM</span>
+                    <h2 class="section-header tracking-tighter">Open Positions</h2>
+                </div>
+                <a href="#contact" class="text-sm font-semibold hidden md:block">Can&apos;t find your role? Reach out →</a>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Position 1 -->
+                <div class="group border border-slate-200 hover:border-sky-200 transition-all bg-white rounded-3xl p-7 flex flex-col">
+                    <div class="flex-1">
+                        <div class="flex justify-between">
+                            <span class="px-3 py-1 text-xs font-bold bg-emerald-100 text-emerald-700 rounded-2xl">FULL-TIME</span>
+                        </div>
+                        <h4 class="font-semibold text-2xl mt-6 tracking-tight">Senior 3D Modeler</h4>
+                        <p class="mt-3 text-slate-600">Create high-detail exterior and interior models for the 787 and future projects.</p>
+                    </div>
+                    <div class="mt-auto pt-6 border-t flex justify-between items-center text-sm">
+                        <span class="font-medium text-slate-500">Remote • Europe</span>
+                        <button onclick="applyForJob('Senior 3D Modeler')" 
+                                class="text-sky-600 hover:text-sky-700 font-semibold flex items-center gap-x-1.5 group-hover:gap-x-2 transition-all">
+                            Apply <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Position 2 -->
+                <div class="group border border-slate-200 hover:border-sky-200 transition-all bg-white rounded-3xl p-7 flex flex-col">
+                    <div class="flex-1">
+                        <div class="flex justify-between">
+                            <span class="px-3 py-1 text-xs font-bold bg-emerald-100 text-emerald-700 rounded-2xl">CONTRACT</span>
+                        </div>
+                        <h4 class="font-semibold text-2xl mt-6 tracking-tight">Livery &amp; Texture Artist</h4>
+                        <p class="mt-3 text-slate-600">Paint stunning, accurate liveries for Icelandair and partner airlines.</p>
+                    </div>
+                    <div class="mt-auto pt-6 border-t flex justify-between items-center text-sm">
+                        <span class="font-medium text-slate-500">Remote</span>
+                        <button onclick="applyForJob('Livery &amp; Texture Artist')" 
+                                class="text-sky-600 hover:text-sky-700 font-semibold flex items-center gap-x-1.5 group-hover:gap-x-2 transition-all">
+                            Apply <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Position 3 -->
+                <div class="group border border-slate-200 hover:border-sky-200 transition-all bg-white rounded-3xl p-7 flex flex-col">
+                    <div class="flex-1">
+                        <div class="flex justify-between">
+                            <span class="px-3 py-1 text-xs font-bold bg-amber-100 text-amber-700 rounded-2xl">PART-TIME</span>
+                        </div>
+                        <h4 class="font-semibold text-2xl mt-6 tracking-tight">Community &amp; Web Manager</h4>
+                        <p class="mt-3 text-slate-600">Manage our Discord, announcements, and this very website.</p>
+                    </div>
+                    <div class="mt-auto pt-6 border-t flex justify-between items-center text-sm">
+                        <span class="font-medium text-slate-500">Remote</span>
+                        <button onclick="applyForJob('Community &amp; Web Manager')" 
+                                class="text-sky-600 hover:text-sky-700 font-semibold flex items-center gap-x-1.5 group-hover:gap-x-2 transition-all">
+                            Apply <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="max-w-screen-2xl mx-auto px-8 py-20 border-t">
+        <div class="max-w-xl mx-auto text-center">
+            <span class="sim-text text-sky-500">GET IN TOUCH</span>
+            <h2 class="section-header tracking-tighter mt-3">Let&apos;s build something incredible together.</h2>
+            
+            <form id="contact-form" onsubmit="submitContactForm(event)" class="mt-10 space-y-5 text-left">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    <div>
+                        <label class="text-xs font-semibold tracking-wider text-slate-500 block mb-1.5">YOUR NAME</label>
+                        <input type="text" id="contact-name" required class="w-full border border-slate-200 focus:border-sky-400 transition-colors h-12 px-5 rounded-2xl outline-none text-sm">
+                    </div>
+                    <div>
+                        <label class="text-xs font-semibold tracking-wider text-slate-500 block mb-1.5">EMAIL ADDRESS</label>
+                        <input type="email" id="contact-email" required class="w-full border border-slate-200 focus:border-sky-400 transition-colors h-12 px-5 rounded-2xl outline-none text-sm">
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="text-xs font-semibold tracking-wider text-slate-500 block mb-1.5">MESSAGE</label>
+                    <textarea id="contact-message" rows="5" required placeholder="I&apos;m interested in collaborating on..." 
+                              class="w-full border border-slate-200 focus:border-sky-400 transition-colors px-5 py-4 rounded-3xl outline-none text-sm resize-y"></textarea>
+                </div>
+
+                <button type="submit" 
+                        class="w-full h-14 bg-slate-900 hover:bg-black active:bg-slate-950 text-white font-semibold rounded-3xl flex items-center justify-center gap-x-3 text-sm tracking-wider transition-all">
+                    SEND MESSAGE
+                    <i class="fa-solid fa-paper-plane"></i>
+                </button>
+            </form>
+            
+            <p class="text-xs text-slate-400 mt-5">We usually reply within 48 hours.</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-white/70 py-8 text-sm">
+        <div class="max-w-screen-2xl mx-auto px-8 flex flex-col md:flex-row justify-between items-center gap-y-3 text-center md:text-left">
+            <div>© 2026 RSG Simulations. All rights reserved. Made with passion for flight simulation.</div>
+            <div class="flex items-center gap-x-5 text-xs">
+                <a href="#" class="hover:text-white">Privacy</a>
+                <a href="#" class="hover:text-white">Terms</a>
+                <a href="https://github.com" target="_blank" class="hover:text-white flex items-center gap-x-1"><i class="fa-brands fa-github"></i> <span>GitHub</span></a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Tailwind script
+        function initializeTailwind() {
+            document.documentElement.style.setProperty('--accent', '#0ea5e9');
+        }
+
+        // Mobile menu
+        function setupMobileMenu() {
+            const btn = document.getElementById('mobile-menu-btn');
+            if (!btn) return;
+
+            btn.addEventListener('click', () => {
+                const nav = document.createElement('div');
+                nav.className = `fixed inset-0 bg-black/60 z-[100] md:hidden`;
+                nav.innerHTML = `
+                    <div class="bg-white w-72 h-full p-8">
+                        <div class="flex justify-between mb-8">
+                            <span class="rsq-logo text-3xl font-black">RSG</span>
+                            <button class="text-3xl text-slate-400">&times;</button>
+                        </div>
+                        <div class="flex flex-col gap-y-4 text-lg font-medium">
+                            <a href="#announcements" class="py-2">Announcements</a>
+                            <a href="#projects" class="py-2">Projects</a>
+                            <a href="#about" class="py-2">About</a>
+                            <a href="#openings" class="py-2">Openings</a>
+                            <a href="#contact" class="py-2">Contact</a>
+                            <div class="pt-4 border-t">
+                                <a href="login.html" class="flex items-center gap-x-2 text-sky-600 font-semibold">
+                                    <i class="fa-solid fa-user-shield"></i> Admin Login
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(nav);
+                
+                nav.querySelector('button').onclick = () => nav.remove();
+                nav.onclick = (e) => { if (e.target === nav) nav.remove(); };
+            });
+        }
+
+        // Announcements System
+        let announcements = [];
+
+        function loadAnnouncements() {
+            const saved = localStorage.getItem('announcements');
+            if (saved) {
+                announcements = JSON.parse(saved);
+            } else {
+                // Default announcements
+                announcements = [
+                    {
+                        id: 1,
+                        title: "Bluebird 757 Reveal at FS Expo",
+                        content: "On June 21st, 2024 at the FS Expo, RSG revealed our third and most complex project. Currently this is being developed by an independent small team until the rest of us can join in after the 757. The 787 is being built from scratch with everything being done in-house.",
+                        date: "2024-06-21",
+                        author: "RSG Team"
+                    },
+                    {
+                        id: 2,
+                        title: "Bluebird 757 v0.9.2 Update Released",
+                        content: "Improved wing flex physics, updated cabin textures, and new custom sounds for the Pratt &amp; Whitney engines. Download the latest version from our Discord or GitHub releases.",
+                        date: "2025-03-12",
+                        author: "Eliaz Tornqvist"
+                    },
+                    {
+                        id: 3,
+                        title: "New Icelandair Special Livery: Northern Lights",
+                        content: "A brand new special livery celebrating Iceland's natural beauty is now available for all Bluebird 757 users. Huge thanks to our community texture artists!",
+                        date: "2025-11-04",
+                        author: "RSG Team"
+                    }
+                ];
+                saveAnnouncements();
+            }
+            renderAnnouncements();
+        }
+
+        function saveAnnouncements() {
+            localStorage.setItem('announcements', JSON.stringify(announcements));
+        }
+
+        function renderAnnouncements() {
+            const container = document.getElementById('announcements-list');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            // Sort newest first
+            const sorted = [...announcements].sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            sorted.forEach(ann => {
+                const card = document.createElement('div');
+                card.className = `announcement-card bg-white border border-slate-100 rounded-3xl p-7 shadow-sm`;
+                
+                card.innerHTML = `
+                    <div class="flex items-center justify-between">
+                        <div class="text-xs px-3 py-1 bg-slate-100 text-slate-500 rounded-2xl font-medium">${ann.date}</div>
+                        <div class="text-xs text-sky-600 font-semibold">${ann.author}</div>
+                    </div>
+                    <h3 class="font-semibold text-2xl tracking-tight mt-4 leading-none">${ann.title}</h3>
+                    <p class="mt-4 text-[15px] leading-relaxed text-slate-600">${ann.content}</p>
+                `;
+                
+                container.appendChild(card);
+            });
+        }
+
+        // Check if admin is logged in and show admin link
+        function checkAdminStatus() {
+            const isAdmin = localStorage.getItem('isAdmin') === 'true';
+            const navAuth = document.getElementById('nav-auth');
+            
+            if (isAdmin && navAuth) {
+                navAuth.innerHTML = `
+                    <a href="admin.html" class="flex items-center gap-x-2 px-4 py-2 bg-emerald-50 text-emerald-700 text-sm font-semibold rounded-3xl hover:bg-emerald-100 transition-colors">
+                        <i class="fa-solid fa-tachometer-alt"></i>
+                        <span>Admin Dashboard</span>
+                    </a>
+                    <button onclick="logout()" class="px-4 py-2 text-xs font-medium text-slate-500 hover:text-red-500 transition-colors">Logout</button>
+                `;
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('isAdmin');
+            localStorage.removeItem('adminEmail');
+            window.location.reload();
+        }
+
+        // Job application
+        function applyForJob(role) {
+            const confirmed = confirm(`Thank you for your interest in the ${role} position at RSG.\n\nIn a real deployment this would open an application form or email.\n\nFor now, would you like to send a demo application?`);
+            if (confirmed) {
+                alert(`Application for ${role} submitted! We'll contact you at your registered email. (Demo)`);
+            }
+        }
+
+        // Contact form
+        function submitContactForm(e) {
+            e.preventDefault();
+            
+            const btns = e.target.querySelectorAll('button');
+            const originalText = btns[0] ? btns[0].innerHTML : '';
+            
+            if (btns[0]) btns[0].innerHTML = `SENDING... <i class="fa-solid fa-spinner fa-spin"></i>`;
+            btns[0].disabled = true;
+            
+            setTimeout(() => {
+                alert("Thank you! Your message has been received. The RSG team will get back to you shortly.");
+                e.target.reset();
+                if (btns[0]) {
+                    btns[0].innerHTML = originalText;
+                    btns[0].disabled = false;
+                }
+            }, 1250);
+        }
+
+        // Initialize everything
+        function initializeSite() {
+            initializeTailwind();
+            setupMobileMenu();
+            loadAnnouncements();
+            checkAdminStatus();
+            
+            // Smooth scroll for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        e.preventDefault();
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Keyboard shortcut hint (dev only)
+            console.log('%c[RSG] Site initialized. Press "A" to quick-add test announcement (dev).', 'color:#64748b');
+            
+            // Easter egg: press "a" to add announcement (only when logged in as admin)
+            document.addEventListener('keydown', function(ev) {
+                if (ev.key.toLowerCase() === 'a' && localStorage.getItem('isAdmin') === 'true') {
+                    const testAnn = {
+                        id: Date.now(),
+                        title: "Test Announcement from Keyboard",
+                        content: "This is a quick test announcement added via keyboard shortcut.",
+                        date: new Date().toISOString().split('T')[0],
+                        author: localStorage.getItem('adminEmail') || "Admin"
+                    };
+                    announcements.unshift(testAnn);
+                    saveAnnouncements();
+                    renderAnnouncements();
+                    
+                    const toast = document.createElement('div');
+                    toast.className = 'fixed bottom-6 right-6 bg-emerald-600 text-white px-5 py-3 rounded-3xl shadow-xl text-sm flex items-center gap-x-2';
+                    toast.innerHTML = `<i class="fa-solid fa-check-double"></i> Test announcement added!`;
+                    document.body.appendChild(toast);
+                    setTimeout(() => toast.remove(), 2200);
+                }
+            });
+        }
+
+        // Boot
+        window.onload = initializeSite;
+    </script>
+</body>
+</html>

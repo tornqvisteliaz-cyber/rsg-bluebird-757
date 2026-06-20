@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard • RSG</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body { font-family: 'Inter', system_ui, sans-serif; }
+        .heading-font { font-family: 'Space Grotesk', 'Inter', sans-serif; font-weight: 600; letter-spacing: -0.025em; }
+        .admin-card { transition: all 0.2s cubic-bezier(0.4, 0.0, 0.2, 1); }
+    </style>
+</head>
+<body class="bg-slate-100">
+    <!-- Top bar -->
+    <div class="bg-white border-b sticky top-0 z-40">
+        <div class="max-w-screen-2xl mx-auto px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-x-4">
+                <a href="index.html" class="flex items-center gap-x-3">
+                    <div class="w-9 h-9 bg-sky-500 rounded-2xl flex items-center justify-center">
+                        <i class="fa-solid fa-plane text-white text-3xl -rotate-12"></i>
+                    </div>
+                    <span class="font-black text-3xl tracking-tighter">RSG</span>
+                </a>
+                <div class="px-4 py-1 bg-emerald-100 text-emerald-700 text-xs font-bold tracking-wider rounded-3xl">ADMIN</div>
+            </div>
+
+            <div class="flex items-center gap-x-4 text-sm">
+                <div class="hidden sm:flex items-center gap-x-2 text-slate-500">
+                    <i class="fa-solid fa-user-circle"></i>
+                    <span id="admin-email">Tornqvisteliaz@gmail.com</span>
+                </div>
+                
+                <a href="index.html" class="px-5 py-2 text-sm font-medium hover:bg-slate-100 rounded-3xl transition-colors">View Site</a>
+                
+                <button onclick="logout()" 
+                        class="px-5 py-2 text-sm font-semibold text-red-600 hover:bg-red-50 rounded-3xl flex items-center gap-x-2 transition-colors">
+                    <i class="fa-solid fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="max-w-screen-2xl mx-auto px-8 py-10">
+        <!-- Header -->
+        <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-y-4 mb-10">
+            <div>
+                <h1 class="text-5xl font-black tracking-tighter heading-font">Admin Dashboard</h1>
+                <p class="text-slate-500 mt-1">Manage announcements and site content</p>
+            </div>
+            
+            <div class="flex items-center gap-x-3">
+                <a href="index.html#announcements" 
+                   class="px-6 h-11 flex items-center justify-center gap-x-2 text-sm font-semibold border border-slate-300 hover:bg-white rounded-3xl transition-all">
+                    <i class="fa-solid fa-external-link-alt"></i>
+                    <span>View on live site</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+            <div class="bg-white rounded-3xl p-6 border">
+                <div class="text-xs tracking-[1.5px] text-slate-400">TOTAL ANNOUNCEMENTS</div>
+                <div id="stat-total" class="text-5xl font-black text-slate-900 mt-1">—</div>
+            </div>
+            <div class="bg-white rounded-3xl p-6 border">
+                <div class="text-xs tracking-[1.5px] text-slate-400">THIS MONTH</div>
+                <div id="stat-month" class="text-5xl font-black text-emerald-600 mt-1">—</div>
+            </div>
+            <div class="bg-white rounded-3xl p-6 border">
+                <div class="text-xs tracking-[1.5px] text-slate-400">LAST UPDATED</div>
+                <div id="stat-last" class="text-xl font-semibold text-slate-700 mt-3">—</div>
+            </div>
+            <div class="bg-white rounded-3xl p-6 border flex flex-col justify-between">
+                <div>
+                    <div class="text-xs tracking-[1.5px] text-slate-400">LOGGED IN AS</div>
+                    <div id="stat-user" class="font-semibold text-lg mt-1">—</div>
+                </div>
+                <div class="text-[10px] text-emerald-600 font-medium">VERIFIED • CAN POST</div>
+            </div>
+        </div>
+
+        <!-- Add New Announcement -->
+        <div class="bg-white rounded-3xl border shadow-sm p-8 mb-10">
+            <div class="flex items-center gap-x-3 mb-6">
+                <i class="fa-solid fa-plus-circle text-sky-500 text-3xl"></i>
+                <h2 class="font-semibold text-2xl tracking-tight">Create New Announcement</h2>
+            </div>
+
+            <form id="add-announcement-form" class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="md:col-span-2">
+                        <label class="text-xs font-bold tracking-widest text-slate-500 block mb-2">TITLE</label>
+                        <input type="text" id="ann-title" required placeholder="Bluebird 757 v1.0 Released"
+                               class="w-full border border-slate-200 focus:border-sky-400 h-12 px-5 rounded-2xl outline-none text-lg">
+                    </div>
+                    <div>
+                        <label class="text-xs font-bold tracking-widest text-slate-500 block mb-2">DATE</label>
+                        <input type="date" id="ann-date" value="2026-06-20" required
+                               class="w-full border border-slate-200 focus:border-sky-400 h-12 px-5 rounded-2xl outline-none">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="text-xs font-bold tracking-widest text-slate-500 block mb-2">CONTENT / BODY</label>
+                    <textarea id="ann-content" rows="6" required placeholder="Write the full announcement here..."
+                              class="w-full border border-slate-200 focus:border-sky-400 px-5 py-4 rounded-3xl outline-none text-[15px] resize-y"></textarea>
+                </div>
+
+                <div class="flex justify-end">
+                    <button type="submit"
+                            class="px-9 h-12 bg-sky-600 hover:bg-sky-700 active:bg-sky-800 transition-all text-white font-semibold rounded-3xl flex items-center gap-x-3 text-sm shadow-inner">
+                        <i class="fa-solid fa-paper-plane"></i>
+                        <span>PUBLISH ANNOUNCEMENT</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Current Announcements -->
+        <div>
+            <div class="flex items-center justify-between mb-5 px-1">
+                <h3 class="font-semibold text-xl tracking-tight">Published Announcements</h3>
+                <span id="ann-count" class="text-xs px-3.5 py-1 bg-white border text-slate-500 rounded-3xl font-medium"></span>
+            </div>
+
+            <div id="admin-announcements-list" class="space-y-4">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let announcements = [];
+
+        function loadAnnouncements() {
+            const saved = localStorage.getItem('announcements');
+            if (saved) {
+                announcements = JSON.parse(saved);
+            } else {
+                announcements = [];
+            }
+            renderAdminList();
+            updateStats();
+        }
+
+        function saveAnnouncements() {
+            localStorage.setItem('announcements', JSON.stringify(announcements));
+        }
+
+        function updateStats() {
+            document.getElementById('stat-total').innerText = announcements.length;
+            
+            const now = new Date();
+            const thisMonth = announcements.filter(a => {
+                const d = new Date(a.date);
+                return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+            }).length;
+            document.getElementById('stat-month').innerText = thisMonth;
+            
+            if (announcements.length > 0) {
+                const latest = [...announcements].sort((a,b) => new Date(b.date) - new Date(a.date))[0];
+                document.getElementById('stat-last').innerText = new Date(latest.date).toLocaleDateString('en-US', {month:'short', day:'numeric'});
+            } else {
+                document.getElementById('stat-last').innerText = 'N/A';
+            }
+            
+            const emailEl = document.getElementById('stat-user');
+            emailEl.innerText = localStorage.getItem('adminEmail') || 'Admin';
+        }
+
+        function renderAdminList() {
+            const container = document.getElementById('admin-announcements-list');
+            container.innerHTML = '';
+            
+            const sorted = [...announcements].sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            if (sorted.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-12 bg-white rounded-3xl border">
+                        <i class="fa-regular fa-newspaper text-5xl text-slate-200 mb-4"></i>
+                        <p class="text-slate-400">No announcements yet. Create your first one above!</p>
+                    </div>
+                `;
+                document.getElementById('ann-count').innerText = '0 announcements';
+                return;
+            }
+            
+            document.getElementById('ann-count').innerText = `${sorted.length} announcement${sorted.length !== 1 ? 's' : ''}`;
+            
+            sorted.forEach((ann, index) => {
+                const div = document.createElement('div');
+                div.className = `admin-card bg-white border border-slate-200 rounded-3xl p-6 flex flex-col md:flex-row md:items-start gap-5`;
+                
+                div.innerHTML = `
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center gap-x-3 mb-1">
+                            <span class="text-xs px-3 py-px bg-slate-100 text-slate-500 rounded font-medium">${ann.date}</span>
+                            <span class="text-xs text-sky-600 font-semibold">${ann.author || 'RSG'}</span>
+                        </div>
+                        <h4 class="font-semibold text-2xl tracking-tight pr-6">${ann.title}</h4>
+                        <p class="text-slate-600 mt-3 text-[15px] leading-relaxed line-clamp-3">${ann.content}</p>
+                    </div>
+                    
+                    <div class="flex md:flex-col gap-2 md:gap-2 md:items-end md:pt-1 flex-shrink-0">
+                        <button onclick="deleteAnnouncement(${ann.id}, this)" 
+                                class="px-5 py-2 text-xs font-semibold text-red-600 hover:bg-red-50 border border-red-200 rounded-2xl transition-colors flex items-center gap-x-2">
+                            <i class="fa-solid fa-trash-can"></i>
+                            <span class="hidden md:inline">Delete</span>
+                        </button>
+                    </div>
+                `;
+                
+                container.appendChild(div);
+            });
+        }
+
+        function deleteAnnouncement(id, btnElement) {
+            if (!confirm('Delete this announcement permanently?')) return;
+            
+            announcements = announcements.filter(a => a.id !== id);
+            saveAnnouncements();
+            renderAdminList();
+            updateStats();
+        }
+
+        // Add new announcement
+        document.getElementById('add-announcement-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const title = document.getElementById('ann-title').value.trim();
+            const content = document.getElementById('ann-content').value.trim();
+            const date = document.getElementById('ann-date').value;
+            
+            if (!title || !content || !date) {
+                alert('Please fill in all fields.');
+                return;
+            }
+            
+            const newAnnouncement = {
+                id: Date.now(),
+                title: title,
+                content: content,
+                date: date,
+                author: localStorage.getItem('adminEmail') || 'Tornqvisteliaz'
+            };
+            
+            announcements.unshift(newAnnouncement);
+            saveAnnouncements();
+            
+            // Reset form
+            e.target.reset();
+            document.getElementById('ann-date').value = new Date().toISOString().split('T')[0];
+            
+            // Refresh list
+            renderAdminList();
+            updateStats();
+            
+            // Success toast
+            const toast = document.createElement('div');
+            toast.className = `fixed bottom-8 right-8 bg-emerald-600 text-white px-6 py-4 rounded-3xl shadow-2xl flex items-center gap-x-3 text-sm`;
+            toast.innerHTML = `
+                <i class="fa-solid fa-check-circle text-xl"></i>
+                <div>
+                    <div class="font-semibold">Announcement published!</div>
+                    <div class="text-emerald-200 text-xs">It is now live on the public site.</div>
+                </div>
+            `;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.transition = 'all 0.3s';
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 250);
+            }, 2800);
+        });
+
+        function logout() {
+            if (confirm('Log out from admin dashboard?')) {
+                localStorage.removeItem('isAdmin');
+                localStorage.removeItem('adminEmail');
+                window.location.href = 'index.html';
+            }
+        }
+
+        function initializeAdmin() {
+            // Check if logged in
+            if (localStorage.getItem('isAdmin') !== 'true') {
+                alert('You must be logged in as admin to access this page.');
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // Set email display
+            const email = localStorage.getItem('adminEmail') || 'Tornqvisteliaz@gmail.com';
+            const emailEl = document.getElementById('admin-email');
+            if (emailEl) emailEl.innerText = email;
+            
+            // Set default date to today
+            const dateInput = document.getElementById('ann-date');
+            if (dateInput) dateInput.value = new Date().toISOString().split('T')[0];
+            
+            // Load data
+            loadAnnouncements();
+            
+            // Keyboard shortcut: press "/" to focus title
+            document.addEventListener('keydown', function(e) {
+                if (e.key === '/' && document.activeElement.tagName === 'BODY') {
+                    e.preventDefault();
+                    document.getElementById('ann-title').focus();
+                }
+            });
+            
+            console.log('%c[RSG Admin] Dashboard ready. Press "/" to focus new announcement title.', 'color:#64748b');
+        }
+
+        window.onload = initializeAdmin;
+    </script>
+</body>
+</html>
